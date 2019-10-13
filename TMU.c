@@ -101,7 +101,6 @@ EnmTMUError_t TMU_Dispatch() {
 	if (ISR_Generated_Flag == 1) {
 
 		Current_Tick_Count++; //when an ISR happens increment the tick counter
-		//if(Current_Tick_Count > 1001){Current_Tick_Count=0;}
 
 		for (uint8 i = 0; i < Buffer_ptr; i++) {
 
