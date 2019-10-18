@@ -5,9 +5,9 @@
  *      Author: PeterKleber
  */
 
-#include "TMU.h"
 #include <avr/io.h>
-
+#include "TMU.h"
+#include "DET.h"
 
 volatile uint8 fun2_counter = 0;
 
@@ -18,15 +18,25 @@ void func1() {
 
 }
 void func2() {
-	fun2_counter++;
+//	fun2_counter++;
 
 	PORTB ^= (1<<PB5);
+	fun2_counter++;
 }
 
 void func3() {
 	PORTB ^= (1<<PB7);
 }
+
+void func4() {
+	PORTB ^= (1<<PB7);
+}
 int main() {
+
+	Det_Start();
+
+	DDRA |= 0xFF ;
+	PORTA = ~(1);
 
 	DDRB |= (1<<PB4);
 	DDRB |= (1<<PB5);
@@ -44,6 +54,9 @@ int main() {
 	TMU_Start_Timer(20, func1, PERIODIC);
 	TMU_Start_Timer(10, func2, PERIODIC);
 	TMU_Start_Timer(4, func3, PERIODIC);
+	//TMU_Start_Timer(400, func3, ONE_SHOT);
+	TMU_Start_Timer(800, func2, ONE_SHOT);
+
 	//TMU_Start_Timer(15, func1, PERIODIC);
 
 
@@ -51,10 +64,13 @@ int main() {
 
 		TMU_Dispatch();
 
-	/*	if (fun2_counter == 3) {
+		//PORTA = Buffer_ptr;
+
+		if (fun2_counter == 30) {
 			TMU_Stop_Timer(func2);
+			fun2_counter++ ;
 		}
-*/
+
 	}
 
 }
